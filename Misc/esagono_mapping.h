@@ -9,6 +9,12 @@ typedef struct
   unsigned char next_node_id[6];
 }esagono_node_t;
 
+typedef struct
+{
+  u8 vertex_nodes[3]; //a,b,c starting from the node with the lowest ID
+  u8 sides[3];        //AB,BC,CA
+}esagono_triangle_t;
+
 esagono_node_t nodes[] =
 {
   {{8,2,9,0,0,0}, // node 0
