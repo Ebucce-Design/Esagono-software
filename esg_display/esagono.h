@@ -1,16 +1,42 @@
 
 #include "esg_map.h"
+
+#define ESG_GET_LED_INDEX(strip, pos)  ( ((pos) > 4) ? ((strip) * 10 + (14 - (pos))) : ((strip) * 10 + (pos)) )
+
 typedef struct
 {
   int start_node;
   int end_node;
   u8 start_port;
   u8 end_port;
+} esg_strip_t;
+ 
+esg_strip_t strips[STRIPS_NUM];
+
+void explore_strips()
+{
+  esg_node_t * node = nodes_map;
+  for(int i = 0; i < ARRAY_SIZE(nodes_map); i++)
+  {
+    for(u8 p = 0; p < 6; p++)
+    {
+      if(node->ports[p].strip_id >= 0)
+      {
+        if(node->ports[p].strip_dir == START)
+        {
+          strips[node->ports[p].strip_id].start_node = i;
+          strips[node->ports[p].strip_id].start_port = p;          
+        }
+        else
+        {
+          strips[node->ports[p].strip_id].end_node = i;
+          strips[node->ports[p].strip_id].end_port = p;
+        }
+      }
+    }
+    node++;
+  }
 }
-
-#define ESG_GET_LED_INDEX(strip, pos)  ( ((pos) > 4) ? ((strip) * 10 + (14 - (pos))) : ((strip) * 10 + (pos)) )
-
-
 // int distance_from_node_to_led_index(esagono_node_t * node, u8 port, u8 distance)
 // {
 //   if (node->dir[port] == 0) return -1;
@@ -41,17 +67,3 @@ typedef struct
 
 //this function completes the map array.
 //It should be called before prior to using esagono.
-void esg_init()
-{
-  u8 tmp;
-  esg_node_t * node = nodes_map;
-  for(int i = 0; i < ARRAY_SIZE(nodes_map); i++)
-  {
-    for(u8 p = 0; p < 6; p++)
-    {
-      if((node->ports[p].strip_id) >= 0)
-      
-
-    }
-  }
-}

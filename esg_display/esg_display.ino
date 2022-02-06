@@ -17,13 +17,21 @@ void setup()
 
 void loop()
 { 
-  for(u8 i = 0; i < LEDS_PER_STRIP; i++)
+  for(int i = 0; i < STRIPS_NUM; i++)
   {
-      Serial.println(ESG_GET_LED_INDEX(1, i));
+    Serial.print("\r\nStrip ");
+    Serial.print(i);
+    Serial.print(" starts at node ");
+    Serial.print(strips[i].start_node);
+    Serial.print(" , port ");
+    Serial.print(strips[i].start_port);
+    Serial.print(" ends at node ");
+    Serial.print(strips[i].end_node);
+    Serial.print(" , port ");
+    Serial.print(strips[i].end_port);
   }
   while(1){}
 }
-
 
 
 
